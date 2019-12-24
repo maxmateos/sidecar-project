@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id "nu.studer.jooq" version "3.0.3"
+    id 'jacoco'
+}
+
+group 'disqo.spring-boot-quick-start'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.2.1.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.2.1.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jooq', version: '2.2.1.RELEASE'
+    compile group: 'com.google.guava', name: 'guava', version: 'r05'
+    
+    testCompile('org.springframework.boot:spring-boot-starter-test:2.2.1.RELEASE')
+    testCompile('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    testCompile('io.projectreactor:reactor-test:3.2.8.RELEASE')
+    testCompile("org.mockito:mockito-junit-jupiter:3.0.0")
+}
+
+test {
+    testLogging {
+        displayGranularity 2
+        events "FAILED", "SKIPPED"
+        exceptionFormat "FULL"
+        afterSuite { desc, result ->
+            if (!desc.parent) {
+                println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+            }
+        }
+    }
+    useJUnitPlatform()
+}

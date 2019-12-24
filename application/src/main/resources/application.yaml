@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://127.0.0.1:5432/exampleDatabase
+    username: test
+    password: testtest
+    driver: com.mysql.jdbc.Driver
+  jooq:
+    sql-dialect: Postgres
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  profile:
+    active: local
+
+server:
+  port: 8585
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

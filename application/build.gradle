@@ -1,0 +1,73 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.7.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.5.RELEASE'
+    id "com.gorylenko.gradle-git-properties" version "2.0.0"
+}
+
+gitProperties {
+    dateFormat = "yyyy-MM-dd HH:mm:ssZ"
+    dateFormatTimeZone = 'GMT'
+}
+
+group 'disqo.spring-boot-quick-start'
+version '1.0-SNAPSHOT'
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.8
+
+jacoco {
+    toolVersion = "0.8.4"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':core')
+
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
+
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.9'
+
+    compile 'io.swagger.core.v3:swagger-annotations:2.0.7'
+
+    testCompile project(':core')
+    testCompile('org.springframework.boot:spring-boot-starter-test:2.1.7.RELEASE')
+    testCompile('org.junit.jupiter:junit-jupiter-engine:5.4.2')
+    testCompile('io.projectreactor:reactor-test:3.2.8.RELEASE')
+    testCompile('org.mockito:mockito-core:2.7.22')
+    testCompile("org.mockito:mockito-junit-jupiter:3.0.0")
+}
+
+test {
+    testLogging {
+        displayGranularity 2
+        events "FAILED", "SKIPPED"
+        exceptionFormat "FULL"
+        afterSuite { desc, result ->
+            if (!desc.parent) { // will match the outermost suite
+                println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+            }
+        }
+    }
+    useJUnitPlatform()
+}

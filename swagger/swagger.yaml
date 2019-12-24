@@ -1,0 +1,56 @@
+openapi: 3.0.1
+info:
+  title: Spring Example Project
+  description: Example description
+  version: 0.0.1
+servers:
+  - url: https://example.site.com
+tags:
+  - name: Example Tag
+    description: Example Tag Description
+paths:
+  /v1/example1/{param1}/example2/{param2}:
+    get:
+      tags:
+        - Example Tag
+      summary: Example Endpoint Summary
+      description: Example Endpoint Description
+      operationId: exampleEndpointId
+      parameters:
+        - name: param1
+          in: path
+          description: Example param 1
+          required: true
+          schema:
+            type: integer
+            format: int
+        - name: param2
+            in: path
+            description: Example param 2
+            required: true
+            schema:
+              type: string
+      responses:
+        200:
+          description: Successful Response Description Example
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExampleComponent'
+        400:
+          description: Bad Request Response Description Example
+        404:
+          description: Not Found Response Description Example
+
+components:
+  schemas:
+    ExampleComponent:
+      type: object
+      properties:
+        param1:
+          type: integer
+        param2:
+          type: string
+        bothParams:
+          type: string
+          example: "param1-param2"
