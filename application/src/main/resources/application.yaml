@@ -1,12 +1,17 @@
 spring:
   datasource:
-    platform: postgres
-    url: jdbc:postgresql://127.0.0.1:5432/exampleDatabase
-    username: test
-    password: testtest
+    platform: mysql
+    url: jdbc:mysql://127.0.0.1:3306/exampleDatabase?serverTimezone=UTC
+    username: root
+    password: 145632Aa
     driver: com.mysql.jdbc.Driver
-  jooq:
-    sql-dialect: Postgres
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: false
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -14,7 +19,7 @@ spring:
     active: local
 
 server:
-  port: 8585
+  port: 8989
 
 management:
   endpoints:
