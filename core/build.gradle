@@ -1,17 +1,14 @@
 plugins {
     id 'java'
-    id "nu.studer.jooq" version "3.0.3"
-    id 'jacoco'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+
 }
 
-group 'disqo.spring-boot-quick-start'
+group 'project.sidecar-health-project'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
 
-jacoco {
-    toolVersion = "0.8.4"
-}
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
@@ -20,9 +17,15 @@ repositories {
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: '2.2.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.2.1.RELEASE'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jooq', version: '2.2.1.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.2.2.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.2.2.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.2.2.RELEASE'
+
     compile group: 'com.google.guava', name: 'guava', version: 'r05'
-    
+    compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.3.1.RELEASE'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'
+    compile group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
+
     testCompile('org.springframework.boot:spring-boot-starter-test:2.2.1.RELEASE')
     testCompile('org.junit.jupiter:junit-jupiter-engine:5.4.2')
     testCompile('io.projectreactor:reactor-test:3.2.8.RELEASE')

@@ -1,28 +1,14 @@
 plugins {
     id 'java'
-    id "org.sonarqube" version "2.6"
 }
 
-group 'com.disqo'
+group 'com.project'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-}
-
-apply plugin: 'org.sonarqube'
-
-sonarqube {
-    properties {
-        property "sonar.host.url", "https://sonarqube.disqotech.com"
-        property "sonar.login", "f8e436c216262abcb90a4c7b088cc4d4069186f7"
-        property "sonar.scm.disabled", "true"
-        property "sonar.projectKey", "spring-boot-quick-start"
-        property "sonar.projectName", "spring-boot-quick-start"
-        property "sonar.exclusions", "**/src/main/java/com/disqo/springbootquickstart/configuration/**, **/src/main/java/com/disqo/springbootquickstart/dto/**, **/src/main/java/com/disqo/springbootquickstart/constant/**, **/src/main/java/com/disqo/springbootquickstart/entity/**, **/src/main/java/com/disqo/springbootquickstart/enumeration/**, **/src/main/java/com/disqo/springbootquickstart/exception/**, **/src/main/java/com/disqo/springbootquickstart/SpringBootQuickStartApplication.java"
-    }
 }
 
 test {
