@@ -37,7 +37,7 @@ dependencies {
 task migrateDatabaseLocal(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
     url = 'jdbc:mysql://127.0.0.1:3306/sidecar_health?serverTimezone=UTC'
     user = 'root'
-    password = '145632Aa'
+    password = '123456Aa'
 }
 
 test {
