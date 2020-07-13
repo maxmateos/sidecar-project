@@ -1,65 +1,87 @@
 package com.project.sidecarhealth.service.implementation;
 
+import static com.project.sidecarhealth.constant.ErrorMessages.USER_RECORD_NOT_FOUND_MESSAGE;
+
 import com.project.sidecarhealth.entity.User;
 import com.project.sidecarhealth.exception.RecordNotFoundException;
 import com.project.sidecarhealth.repository.UserRepository;
 import com.project.sidecarhealth.service.UserService;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
-
-import static com.project.sidecarhealth.constant.ErrorMessages.INVALID_USER_ID_MESSAGE;
-import static com.project.sidecarhealth.constant.ErrorMessages.USER_RECORD_NOT_FOUND_MESSAGE;
 
 @Component
 public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
+  private static final Logger logger = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private UserRepository userRepository;
+  private UserRepository userRepository;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  @Autowired
+  public UserServiceImpl(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-    @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
+  @Override
+  public User createUser(User user) {
 
-    @Override
-    public User getUserById(Long userId) {
-        final Optional<User> user = userRepository.findById(userId);
-        return user.orElseThrow(() -> new RecordNotFoundException(USER_RECORD_NOT_FOUND_MESSAGE));
-    }
+    logger.info("Creating user in db");
+    return userRepository.save(user);
+  }
 
-    @Override
-    public List<User> getUsers() {
-        final Iterable<User> users = userRepository.findAll();
-        return StreamSupport.stream(users.spliterator(), false).collect(Collectors.toList());
-    }
+  @Override
+  public User getUserById(Long id) {
 
-    @Override
-    public Long castUserIdToLong(String rawUserId) {
+    logger.info("Retrieving user with id: {}", id);
+    return userRepository
+        .findById(id)
+        .orElseThrow(() -> new RecordNotFoundException(USER_RECORD_NOT_FOUND_MESSAGE));
+  }
 
-        try {
-            return Long.valueOf(rawUserId);
-        } catch (NumberFormatException e) {
-            logger.error("User id '{}' failed numeric format validation", rawUserId);
-            throw new RecordNotFoundException(String.format(INVALID_USER_ID_MESSAGE, rawUserId));
-        }
-    }
+  @Override
+  public List<User> getUsers() {
+
+    logger.info("Retrieving all users from db");
+    final Iterable<User> users = userRepository.findAll();
+    return StreamSupport.stream(users.spliterator(), false).collect(Collectors.toList());
+  }
+
+  @Override
+  public List<User> findByLastname(String lastname) {
+
+    logger.info("Retrieving all users with lastnama '{}' from db", lastname);
+    final Iterable<User> users = userRepository.findByLastName(lastname);
+    return StreamSupport.stream(users.spliterator(), false).collect(Collectors.toList());
+  }
+
+  @Override
+  public User updateUser(Long id, User user) {
+
+    logger.info("Updating user with id: {}", id);
+    final User userToUpdate =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new RecordNotFoundException(USER_RECORD_NOT_FOUND_MESSAGE));
+
+    userToUpdate.setName(setValueIfNotNull(user.getName(), userToUpdate.getName()));
+    userToUpdate.setLastName(setValueIfNotNull(user.getLastName(), userToUpdate.getLastName()));
+    userToUpdate.setEmail(setValueIfNotNull(user.getEmail(), userToUpdate.getEmail()));
+    userToUpdate.setApiKey(setValueIfNotNull(user.getApiKey(), userToUpdate.getApiKey()));
+
+    return userRepository.save(userToUpdate);
+  }
+
+  @Override
+  public void deleteUser(Long id) {
+
+    logger.info("Deleting user with id: {}", id);
+    final User userToDelete =
+        userRepository
+            .findById(id)
+            .orElseThrow(() -> new RecordNotFoundException(USER_RECORD_NOT_FOUND_MESSAGE));
+    userRepository.delete(userToDelete);
+  }
 }

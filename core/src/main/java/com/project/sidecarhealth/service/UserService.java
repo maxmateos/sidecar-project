@@ -1,14 +1,19 @@
 package com.project.sidecarhealth.service;
 
 import com.project.sidecarhealth.entity.User;
-
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends BaseService {
 
   User createUser(User user);
-  User getUserById(Long userId);
-  List<User> getUsers();
-  Long castUserIdToLong(String rawUserId);
 
+  User getUserById(Long id);
+
+  List<User> getUsers();
+
+  List<User> findByLastname(String lastname);
+
+  User updateUser(Long id, User user);
+
+  void deleteUser(Long id);
 }

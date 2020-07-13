@@ -3,13 +3,12 @@ package com.project.sidecarhealth.dto;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class UserResponseDTO {
+public class PostResponseDTO {
 
   private Long id;
-  private String name;
-  private String lastName;
-  private String email;
-  private String apiKey;
+  private String title;
+  private String postBody;
+  private Long userId;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
@@ -21,36 +20,28 @@ public class UserResponseDTO {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
-  public String getLastName() {
-    return lastName;
+  public String getPostBody() {
+    return postBody;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setPostBody(String postBody) {
+    this.postBody = postBody;
   }
 
-  public String getEmail() {
-    return email;
+  public Long getUserId() {
+    return userId;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  public void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
+  public void setUserId(Long userId) {
+    this.userId = userId;
   }
 
   public LocalDateTime getCreatedAt() {
@@ -73,12 +64,11 @@ public class UserResponseDTO {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    UserResponseDTO that = (UserResponseDTO) o;
+    PostResponseDTO that = (PostResponseDTO) o;
     return Objects.equals(getId(), that.getId())
-        && Objects.equals(getName(), that.getName())
-        && Objects.equals(getLastName(), that.getLastName())
-        && Objects.equals(getEmail(), that.getEmail())
-        && Objects.equals(getApiKey(), that.getApiKey())
+        && Objects.equals(getTitle(), that.getTitle())
+        && Objects.equals(getPostBody(), that.getPostBody())
+        && Objects.equals(getUserId(), that.getUserId())
         && Objects.equals(getCreatedAt(), that.getCreatedAt())
         && Objects.equals(getUpdatedAt(), that.getUpdatedAt());
   }
@@ -86,6 +76,6 @@ public class UserResponseDTO {
   @Override
   public int hashCode() {
     return Objects.hash(
-        getId(), getName(), getLastName(), getEmail(), getApiKey(), getCreatedAt(), getUpdatedAt());
+        getId(), getTitle(), getPostBody(), getUserId(), getCreatedAt(), getUpdatedAt());
   }
 }

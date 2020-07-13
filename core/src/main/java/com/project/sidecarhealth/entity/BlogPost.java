@@ -9,16 +9,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class BlogPost {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  private String name;
-  private String lastName;
-  private String email;
-  private String apiKey;
+  private String title;
+  private String postBody;
+  private Long userId;
 
   @CreatedDate
   @Column(name = "created_at")
@@ -36,36 +35,28 @@ public class User {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getTitle() {
+    return title;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
-  public String getLastName() {
-    return lastName;
+  public String getPostBody() {
+    return postBody;
   }
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
+  public void setPostBody(String postBody) {
+    this.postBody = postBody;
   }
 
-  public String getEmail() {
-    return email;
+  public Long getUserId() {
+    return userId;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getApiKey() {
-    return apiKey;
-  }
-
-  public void setApiKey(String apiKey) {
-    this.apiKey = apiKey;
+  public void setUserId(Long userId) {
+    this.userId = userId;
   }
 
   public LocalDateTime getCreatedAt() {
@@ -88,19 +79,18 @@ public class User {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    User user = (User) o;
-    return Objects.equals(getId(), user.getId())
-        && Objects.equals(getName(), user.getName())
-        && Objects.equals(getLastName(), user.getLastName())
-        && Objects.equals(getEmail(), user.getEmail())
-        && Objects.equals(getApiKey(), user.getApiKey())
-        && Objects.equals(getCreatedAt(), user.getCreatedAt())
-        && Objects.equals(getUpdatedAt(), user.getUpdatedAt());
+    BlogPost post = (BlogPost) o;
+    return Objects.equals(getId(), post.getId())
+        && Objects.equals(getTitle(), post.getTitle())
+        && Objects.equals(getPostBody(), post.getPostBody())
+        && Objects.equals(getUserId(), post.getUserId())
+        && Objects.equals(getCreatedAt(), post.getCreatedAt())
+        && Objects.equals(getUpdatedAt(), post.getUpdatedAt());
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        getId(), getName(), getLastName(), getEmail(), getApiKey(), getCreatedAt(), getUpdatedAt());
+        getId(), getTitle(), getPostBody(), getUserId(), getCreatedAt(), getUpdatedAt());
   }
 }

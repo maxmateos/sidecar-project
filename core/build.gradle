@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-
+    id "org.flywaydb.flyway" version "5.2.4"
 }
 
 group 'project.sidecar-health-project'
@@ -20,6 +20,8 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.2.2.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.2.2.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.2.2.RELEASE'
+    compile "org.flywaydb:flyway-core:5.2.4"
+
 
     compile group: 'com.google.guava', name: 'guava', version: 'r05'
     compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.3.1.RELEASE'
@@ -30,6 +32,12 @@ dependencies {
     testCompile('org.junit.jupiter:junit-jupiter-engine:5.4.2')
     testCompile('io.projectreactor:reactor-test:3.2.8.RELEASE')
     testCompile("org.mockito:mockito-junit-jupiter:3.0.0")
+}
+
+task migrateDatabaseLocal(type: org.flywaydb.gradle.task.FlywayMigrateTask) {
+    url = 'jdbc:mysql://127.0.0.1:3306/sidecar_health?serverTimezone=UTC'
+    user = 'root'
+    password = '145632Aa'
 }
 
 test {

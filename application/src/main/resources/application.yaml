@@ -1,9 +1,9 @@
 spring:
   datasource:
     platform: mysql
-    url: jdbc:mysql://127.0.0.1:3306/exampleDatabase?serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/sidecar_health?serverTimezone=UTC
     username: root
-    password: 145632Aa
+    password: 123456
     driver: com.mysql.jdbc.Driver
   jpa:
     hibernate.ddl-auto: update
@@ -15,6 +15,8 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: false
+  flyway:
+    baseline-on-migrate: true
   profile:
     active: local
 

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 public class SideCarHealthApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SideCarHealthApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(SideCarHealthApplication.class, args);
+  }
 }

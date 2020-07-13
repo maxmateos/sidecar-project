@@ -1,56 +1,422 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
-  title: Spring Example Project
-  description: Example description
-  version: 0.0.1
-servers:
-  - url: https://example.site.com
+  title: Blog Posting MVP
+  description: Create, read, update, and delete users and blogposts with Spring JPA
+  version: 1.0.0
 tags:
-  - name: Example Tag
-    description: Example Tag Description
+  - name: users
+    description: Endpoints listed under the `/users` route will perform data operations to the users table.
+  - name: posts
+    description: Endpoints listed under the `/posts` route will perform data operations to the posts table.
 paths:
-  /v1/example1/{param1}/example2/{param2}:
+  /v1/users:
     get:
       tags:
-        - Example Tag
-      summary: Example Endpoint Summary
-      description: Example Endpoint Description
-      operationId: exampleEndpointId
-      parameters:
-        - name: param1
-          in: path
-          description: Example param 1
-          required: true
-          schema:
-            type: integer
-            format: int
-        - name: param2
-            in: path
-            description: Example param 2
-            required: true
-            schema:
-              type: string
+        - users
+      summary: Retrieve all user records from database.
+      operationId: getAllUsers
       responses:
         200:
-          description: Successful Response Description Example
+          description: Successful retrieval of all user records.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ExampleComponent'
+                $ref: '#/components/schemas/UsersListResponse'
+        401:
+          description: Unauthorized
+
+  /v1/users/{userId}:
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        description: Unique user identifier
+        schema:
+          type: integer
+    post:
+      tags:
+        - users
+      summary: Create a new user record in database.
+      operationId: createUser
+      responses:
+        201:
+          description: Successful creation of user record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
         400:
-          description: Bad Request Response Description Example
+          description: Badly formatted request body or parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Unauthorized
+        409:
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - users
+      summary: Retrieve single user record from database
+      operationId: getUser
+      responses:
+        200:
+          description: Successful retrieval of user record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+        400:
+          description: Badly formatted request body or parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Unauthorized
         404:
-          description: Not Found Response Description Example
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - users
+      summary: Update an existing user record in database.
+      operationId: updateUser
+      responses:
+        200:
+          description: Successful update of user record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: Badly formatted request body or parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - users
+      summary: Delete an existing user record in database.
+      operationId: deleteUser
+      responses:
+        204:
+          description: Successful deletion of user record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /v1/users/lastname/{lastName}:
+    parameters:
+      - in: path
+        name: lastName
+        required: true
+        description: Users' last name property to search by
+        schema:
+          type: string
+
+    get:
+      tags:
+        - users
+      summary: Retrieve user records from database with matching lastname
+      operationId: getUsersByLastName
+      responses:
+        200:
+          description: Successful retrieval of user records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersListResponse'
+
+        401:
+          description: Unauthorized
+  /v1/posts:
+    get:
+      tags:
+        - posts
+      summary: Retrieve all post records from database.
+      operationId: getAllPosts
+      responses:
+        200:
+          description: Successful retrieval of all post records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostsListResponse'
+        401:
+          description: Unauthorized
+  /v1/users/{userId}/posts:
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        description: Unique user identifier
+        schema:
+          type: integer
+
+    post:
+      tags:
+        - posts
+      summary: Create a new user post record in database.
+      operationId: createPost
+      responses:
+        201:
+          description: Successful creation of user post record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        400:
+          description: Badly formatted request body or parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Unauthorized
+        409:
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    get:
+      tags:
+        - posts
+      summary: Retrieve all of a user's posts records from database
+      operationId: getUserPosts
+      responses:
+        200:
+          description: Successful retrieval of user's post records.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostsListResponse'
+
+        400:
+          description: Badly formatted request body or parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/users/{userId}/posts/{postId}:
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        description: Unique user identifier
+        schema:
+          type: integer
+      - in: path
+        name: postId
+        required: true
+        description: Unique post identifier
+        schema:
+          type: integer
+
+    get:
+      tags:
+        - posts
+      summary: Retrieve single user post record from database
+      operationId: getPost
+      responses:
+        200:
+          description: Successful retrieval of user post record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+
+        400:
+          description: Badly formatted request body or parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - posts
+      summary: Update an existing user post record in database.
+      operationId: updatePost
+      responses:
+        200:
+          description: Successful update of user's post record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        400:
+          description: Badly formatted request body or parameter.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - posts
+      summary: Delete an existing user's post record in database.
+      operationId: deletePost
+      responses:
+        204:
+          description: Successful deletion of a user's post record.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        401:
+          description: Unauthorized
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
-    ExampleComponent:
+    ErrorResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ErrorResponseObject'
+    ErrorResponseObject:
       type: object
       properties:
-        param1:
+        errorCode:
+          type: string
+          example: "001"
+          description: Code for tagging errors.
+          enum:
+            - "001 - Empty Required Field"
+            - "002 - Invalid Value"
+            - "003 - Record Not Found"
+            - "004 - Record Already Exists"
+        field:
+          type: string
+          description: Indicates which field of payload was the source of the error
+          example:  "email"
+        message:
+          type: string
+          example: "Invalid JSON request"
+    UsersListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserResponse'
+    UserResponse:
+      type: object
+      properties:
+        id:
           type: integer
-        param2:
+          description: Unique, autoincremented, user identifier.
+          example: 223
+        name:
           type: string
-        bothParams:
+          description: User's first name
+          example: John
+        lastName:
           type: string
-          example: "param1-param2"
+          description: User's last name
+          example: Doe
+        email:
+          type: string
+          description: Valid-format user email
+          example: john_doe@gmail.com
+        apiKey:
+          type: string
+          description: Api key to authenticate in jwt token retrieval endpoint
+          example: BDE331ABC
+        createdAt:
+          type: string
+          description: Date & time of creation of record
+          example: "2020-07-12T19:02:16"
+        updatedAt:
+          type: string
+          description: Date & time of last update to record
+          example: "2020-07-12T19:02:16"
+    PostsListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/PostResponse'
+    PostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique, autoincremented, post identifier.
+          example: 444
+        title:
+          type: string
+          description: Post's title heading
+          example: 9 Facts about Owls that you didn't know
+        postBody:
+          type: string
+          description: Content of the blogpost
+          example: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        userId:
+          type: integer
+          description: Unique identifier of post's owner user
+          example: 223
+        createdAt:
+          type: string
+          description: Date & time of creation of record
+          example: "2020-07-12T19:02:16"
+        updatedAt:
+          type: string
+          description: Date & time of last update to record
+          example: "2020-07-12T19:02:16"
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

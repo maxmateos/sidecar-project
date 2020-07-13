@@ -1,8 +1,7 @@
 package com.project.sidecarhealth.exception;
 
-import org.springframework.validation.ObjectError;
-
 import java.util.List;
+import org.springframework.validation.ObjectError;
 
 public class ValidationException extends RuntimeException {
 
